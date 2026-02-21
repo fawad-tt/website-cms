@@ -71,21 +71,21 @@ export interface Config {
     media: Media;
     sites: Site;
     domains: Domain;
+    pages: Page;
+    navigation: Navigation;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {
-    sites: {
-      domains: 'domains';
-    };
-  };
+  collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     sites: SitesSelect<false> | SitesSelect<true>;
     domains: DomainsSelect<false> | DomainsSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    navigation: NavigationSelect<false> | NavigationSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -169,13 +169,27 @@ export interface Site {
    * URL-friendly identifier (lowercase, numbers, hyphens only, max 40 characters)
    */
   slug: string;
-  domains?: {
-    docs?: (number | Domain)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -200,22 +214,104 @@ export interface Domain {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
+ * via the `definition` "pages".
  */
-export interface Media {
+export interface Page {
   id: number;
-  alt: string;
+  /**
+   * The site this page belongs to
+   */
+  site: number | Site;
+  title: string;
+  /**
+   * Page type - each site can only have one page of each type
+   */
+  type: 'home' | 'about' | 'contact' | 'reviews';
+  /**
+   * Enable or disable this page
+   */
+  isEnabled?: boolean | null;
+  /**
+   * Include this page in the sitemap.xml
+   */
+  includeInSiteMap?: boolean | null;
+  /**
+   * SEO meta title (recommended: 50-60 characters)
+   */
+  metaTitle?: string | null;
+  /**
+   * SEO meta description (recommended: 150-160 characters)
+   */
+  metaDescription?: string | null;
+  /**
+   * Custom HTML code to inject in the <head> section
+   */
+  customHeadCode?: string | null;
+  /**
+   * Custom HTML code to inject before </body>
+   */
+  customFooterCode?: string | null;
   updatedAt: string;
   createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation".
+ */
+export interface Navigation {
+  id: number;
+  /**
+   * The site this navigation belongs to (one navigation per site)
+   */
+  site: number | Site;
+  /**
+   * Navigation items for the header menu
+   */
+  header?:
+    | {
+        label: string;
+        linkType: 'internal' | 'external';
+        /**
+         * Link to an internal page (filtered by selected site)
+         */
+        page?: (number | null) | Page;
+        /**
+         * Link to an external URL (e.g., https://example.com)
+         */
+        externalUrl?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Display order (lower numbers appear first)
+         */
+        order: number;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Navigation items for the footer menu
+   */
+  footer?:
+    | {
+        label: string;
+        linkType: 'internal' | 'external';
+        /**
+         * Link to an internal page (filtered by selected site)
+         */
+        page?: (number | null) | Page;
+        /**
+         * Link to an external URL (e.g., https://example.com)
+         */
+        externalUrl?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Display order (lower numbers appear first)
+         */
+        order: number;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -256,6 +352,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'domains';
         value: number | Domain;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'navigation';
+        value: number | Navigation;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -351,7 +455,6 @@ export interface MediaSelect<T extends boolean = true> {
 export interface SitesSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
-  domains?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -363,6 +466,54 @@ export interface DomainsSelect<T extends boolean = true> {
   domain?: T;
   site?: T;
   isPrimary?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  site?: T;
+  title?: T;
+  type?: T;
+  isEnabled?: T;
+  includeInSiteMap?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  customHeadCode?: T;
+  customFooterCode?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation_select".
+ */
+export interface NavigationSelect<T extends boolean = true> {
+  site?: T;
+  header?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        externalUrl?: T;
+        openInNewTab?: T;
+        order?: T;
+        id?: T;
+      };
+  footer?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        externalUrl?: T;
+        openInNewTab?: T;
+        order?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
