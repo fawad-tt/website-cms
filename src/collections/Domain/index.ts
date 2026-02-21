@@ -1,11 +1,23 @@
 import type { CollectionConfig } from 'payload'
 import { ensureOnePrimaryDomain } from './hooks/ensureOnePrimaryDomain'
+import {
+  isAdminOrHasSiteAccess,
+  canCreateForSites,
+  canUpdateSiteContent,
+  canDeleteSiteContent,
+} from '../../access'
 
 export const Domain: CollectionConfig = {
   slug: 'domains',
   admin: {
     useAsTitle: 'domain',
     defaultColumns: ['domain', 'site', 'isPrimary', 'createdAt'],
+  },
+  access: {
+    read: isAdminOrHasSiteAccess,
+    create: canCreateForSites,
+    update: canUpdateSiteContent,
+    delete: canDeleteSiteContent,
   },
   fields: [
     {

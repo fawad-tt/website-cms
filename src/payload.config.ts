@@ -31,6 +31,9 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
+  graphQL: {
+    disable: false, // GraphQL API explicitly enabled
+  },
   sharp,
   plugins: [],
 })

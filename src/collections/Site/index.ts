@@ -1,10 +1,17 @@
 import type { CollectionConfig } from 'payload'
+import { canReadSites, isAdmin, canUpdateSites, isAdminFieldLevel } from '../../access'
 
 export const Site: CollectionConfig = {
   slug: 'sites',
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'slug', 'createdAt'],
+  },
+  access: {
+    read: canReadSites,
+    create: isAdmin,
+    update: canUpdateSites,
+    delete: isAdmin,
   },
   fields: [
     {
@@ -20,6 +27,9 @@ export const Site: CollectionConfig = {
       unique: true,
       index: true,
       label: 'Slug',
+      access:{
+        update: isAdminFieldLevel,
+      },
       maxLength: 40,
       validate: (value: unknown) => {
         // Slug format: lowercase letters, numbers, and hyphens only
