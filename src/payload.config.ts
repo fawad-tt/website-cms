@@ -11,6 +11,7 @@ import { Site } from './collections/Site'
 import { Domain } from './collections/Domain'
 import { Pages } from './collections/Pages'
 import { Navigation } from './collections/Navigation'
+import { PageContents } from './collections/PageContents'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -31,7 +32,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Site, Domain, Pages, Navigation],
+  collections: [Users, Media, Site, Domain, Pages, Navigation, PageContents],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
