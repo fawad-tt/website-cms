@@ -17,6 +17,15 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    meta:{
+      titleSuffix: ' - Tiretutor',
+    },
+    components:{
+      graphics:{
+        Logo: '/components/Logo#default',
+        Icon: '/components/Icon#default',
+      },
+    },
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
