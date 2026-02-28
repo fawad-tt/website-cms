@@ -1,4 +1,4 @@
-import type { CollectionConfig, FilterOptions } from 'payload'
+import type { CollectionConfig } from 'payload'
 import {
   isAdminOrHasSiteAccess,
   canCreateForSites,
@@ -6,22 +6,7 @@ import {
   canDeleteSiteContent,
 } from '../../access'
 import { validateUniqueSiteNavigation } from './hooks/validateUniqueSiteNavigation'
-
-
-const selectedSitePageFilter: FilterOptions<any> = ({ data }) => {
-  const siteId = 
-    typeof data?.site === 'string' || typeof data?.site === 'number'
-      ? data.site
-      : data?.site?.id;
-
-  if (!siteId) return false;
-  // Only show pages from the same site              
-  return {
-    site: {
-      equals: siteId,
-    },
-  };
-}
+import { selectedSiteFilter } from '../../utils/filters'
 
 export const Navigation: CollectionConfig = {
   slug: 'navigation',
@@ -95,7 +80,7 @@ export const Navigation: CollectionConfig = {
                   type: 'relationship',
                   relationTo: 'pages',
                   label: 'Internal Page',
-                  filterOptions: selectedSitePageFilter,
+                  filterOptions: selectedSiteFilter,
                   required: true,
                   admin: {
                     description: 'Link to an internal page (filtered by selected site)',
@@ -170,7 +155,7 @@ export const Navigation: CollectionConfig = {
                   type: 'relationship',
                   relationTo: 'pages',
                   label: 'Internal Page',
-                  filterOptions: selectedSitePageFilter,
+                  filterOptions: selectedSiteFilter,
                   required: true,
                   admin: {
                     description: 'Link to an internal page (filtered by selected site)',

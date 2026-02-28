@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, canUpdateSiteContent, canReadSiteContent } from '../../access'
+import { isAdmin, canUpdateSiteContent, isAdminOrHasSiteAccess } from '../../access'
 import { validateUniquePageContents } from './hooks/validateUniquePageContents'
+import { selectedSiteFilter } from '../../utils/filters'
 
 export const PageContents: CollectionConfig = {
   slug: 'page-contents',
@@ -53,6 +54,28 @@ export const PageContents: CollectionConfig = {
           label: 'Paragraph',
           admin: {
             description: 'Paragraph text for the home page hero section',
+          },
+        },
+        {
+          name: 'backgroundImage',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Background Image',
+          filterOptions: selectedSiteFilter,
+          admin: {
+            description: 'Background image for the home page hero section (filtered by site)',
+          },
+        },
+        {
+          name: 'overlayOpacity',
+          type: 'number',
+          label: 'Overlay Opacity',
+          min: 0,
+          max: 100,
+          defaultValue: 50,
+          admin: {
+            description: 'Overlay opacity percentage (0-100). Higher values create a darker overlay.',
+            condition: (data, siblingData) => Boolean(siblingData?.backgroundImage),
           },
         },
       ],
