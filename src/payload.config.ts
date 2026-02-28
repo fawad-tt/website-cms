@@ -16,6 +16,7 @@ import { SiteSettings } from './collections/SiteSettings'
 import { Locations } from './collections/Locations'
 import { FinanceOptions } from './collections/FinanceOptions'
 import { Services } from './collections/Services'
+import { Blogs } from './collections/Blogs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -36,7 +37,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Site, Domain, Pages, Navigation, PageContents, SiteSettings, Locations, FinanceOptions, Services],
+  collections: [Users, Media, Site, Domain, Pages, Navigation, PageContents, SiteSettings, Locations, FinanceOptions, Services, Blogs],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
