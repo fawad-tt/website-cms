@@ -61,7 +61,7 @@ export const Locations: CollectionConfig = {
               required: true,
               defaultValue: 1,
               min: 0,
-              label: 'Order Number',
+              label: 'Display Order',
               admin: {
                 description: 'Display order for sorting locations (lower numbers appear first)',
               },
