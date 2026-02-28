@@ -1,2 +1,8 @@
 export { userSitesFilter, selectedSiteFilter } from './filters'
-export { validateURL, validateEmail } from './validators'
+export {
+  validateURL,
+  validateEmail,
+  validateLatitude,
+  validateLongitude,
+  validatePositiveNumber,
+} from './validators'
