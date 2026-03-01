@@ -165,6 +165,238 @@ export const SiteSettings: CollectionConfig = {
             },
           ],
         },
+        {
+          label: 'Widget Credentials',
+          fields: [
+            {
+              name: 'widgets',
+              type: 'group',
+              fields: [
+                {
+                  name: 'tireTutor',
+                  label: 'Tire Tutor',
+                  type: 'group',
+                  admin: {
+                    description:
+                      'Tire Tutor widget credentials (supports Schedule Service, Get Quote, Shop for Tires)',
+                  },
+                  fields: [
+                    {
+                      name: 'dealerId',
+                      type: 'text',
+                      label: 'Dealer ID',
+                      admin: {
+                        description:
+                          'Tire Tutor dealer ID - required if any action uses Tire Tutor',
+                      },
+                    },
+                  ],
+                },
+                {
+                  name: 'tireAnytime',
+                  label: 'Tire Anytime',
+                  type: 'group',
+                  admin: {
+                    description: 'Tire Anytime widget credentials (supports Shop for Tires)',
+                  },
+                  fields: [
+                    {
+                      name: 'dealerCode',
+                      type: 'text',
+                      label: 'Dealer Code',
+                      admin: {
+                        description:
+                          'Tire Anytime dealer code - required if any action uses Tire Anytime',
+                      },
+                    },
+                  ],
+                },
+                {
+                  name: 'autoOps',
+                  label: 'AutoOps',
+                  type: 'group',
+                  admin: {
+                    description: 'AutoOps widget credentials (supports Schedule Service)',
+                  },
+                  fields: [
+                    {
+                      name: 'apiKey',
+                      type: 'text',
+                      label: 'API Key',
+                      admin: {
+                        description: 'AutoOps API key - required if any action uses AutoOps',
+                      },
+                    },
+                  ],
+                },
+                {
+                  name: 'repairAnytime',
+                  label: 'Repair Anytime',
+                  type: 'group',
+                  admin: {
+                    description: 'Repair Anytime widget credentials (supports Get Quote)',
+                  },
+                  fields: [
+                    {
+                      name: 'locationRedirects',
+                      label: 'Location Redirect Mapping',
+                      type: 'array',
+                      admin: {
+                        description:
+                          'Map each location to its Repair Anytime redirect URL - required if any action uses Repair Anytime',
+                      },
+                      fields: [
+                        {
+                          name: 'location',
+                          type: 'relationship',
+                          relationTo: 'locations',
+                          required: true,
+                          label: 'Location',
+                          filterOptions: ({ data, siblingData }) => {
+                            const locationRedirects =
+                              data?.widgets?.repairAnytime?.locationRedirects ?? []
+
+                            const currentLocationId = (siblingData as any)?.location
+
+                            const selectedLocationIds = locationRedirects
+                              .map(({ location }: any) => location)
+                              .filter((id: any) => id != null && id !== currentLocationId)
+
+                            if (!selectedLocationIds.length) return true
+
+                            return {
+                              id: {
+                                not_in: selectedLocationIds,
+                              },
+                            }
+                          },
+                          admin: {
+                            description:
+                              'Select a location (already selected locations are filtered out)',
+                          },
+                        },
+                        {
+                          name: 'redirectUrl',
+                          type: 'text',
+                          label: 'Redirect URL',
+                          required: true,
+                          validate: validateURL,
+                          admin: {
+                            description: 'Full redirect URL for this location',
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Action Configuration',
+          fields: [
+            {
+              name: 'actions',
+              type: 'group',
+              fields: [
+                {
+                  name: 'shopTires',
+                  label: 'Shop Tires',
+                  type: 'group',
+                  fields: [
+                    {
+                      name: 'enabled',
+                      type: 'checkbox',
+                      defaultValue: false,
+                      label: 'Enable Shop Tires Action',
+                      admin: {
+                        description: 'Enable or disable the Shop Tires action on the frontend',
+                      },
+                    },
+                    {
+                      name: 'provider',
+                      type: 'radio',
+                      label: 'Widget Provider',
+                      options: [
+                        { label: 'Tire Tutor', value: 'tireTutor' },
+                        { label: 'Tire Anytime', value: 'tireAnytime' },
+                      ],
+                      defaultValue: 'tireTutor',
+                      admin: {
+                        description:
+                          'Select which widget provider to use for the Shop Tires action',
+                        condition: (data) => data?.actions?.shopTires?.enabled === true,
+                      },
+                    },
+                  ],
+                },
+                {
+                  name: 'scheduleService',
+                  label: 'Schedule Service',
+                  type: 'group',
+                  fields: [
+                    {
+                      name: 'enabled',
+                      type: 'checkbox',
+                      defaultValue: false,
+                      label: 'Enable Schedule Service Action',
+                      admin: {
+                        description:
+                          'Enable or disable the Schedule Service action on the frontend',
+                      },
+                    },
+                    {
+                      name: 'provider',
+                      type: 'radio',
+                      label: 'Widget Provider',
+                      options: [
+                        { label: 'Tire Tutor', value: 'tireTutor' },
+                        { label: 'AutoOps', value: 'autoOps' },
+                      ],
+                      defaultValue: 'tireTutor',
+                      admin: {
+                        description:
+                          'Select which widget provider to use for the Schedule Service action',
+                        condition: (data) => data?.actions?.scheduleService?.enabled === true,
+                      },
+                    },
+                  ],
+                },
+                {
+                  name: 'getQuote',
+                  label: 'Get Quote',
+                  type: 'group',
+                  fields: [
+                    {
+                      name: 'enabled',
+                      type: 'checkbox',
+                      defaultValue: false,
+                      label: 'Enable Get Quote Action',
+                      admin: {
+                        description: 'Enable or disable the Get Quote action on the frontend',
+                      },
+                    },
+                    {
+                      name: 'provider',
+                      type: 'radio',
+                      label: 'Widget Provider',
+                      options: [
+                        { label: 'Tire Tutor', value: 'tireTutor' },
+                        { label: 'Repair Anytime', value: 'repairAnytime' },
+                      ],
+                      defaultValue: 'tireTutor',
+                      admin: {
+                        description: 'Select which widget provider to use for the Get Quote action',
+                        condition: (data) => data?.actions?.getQuote?.enabled === true,
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
       ],
     },
   ],
