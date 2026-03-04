@@ -14,7 +14,15 @@ export const Media: CollectionConfig = {
     defaultColumns: ['alt', 'site', 'updatedAt'],
   },
   access: {
-    read: isAdminOrHasSiteAccess,
+    read: ({ req }) => {
+      // Allow public access to file serving (when accessing /api/media/file/*)
+      // This checks if the request is for a file download vs collection data
+      if (req.url?.includes('/api/media/file/')) {
+        return true
+      }
+      // Otherwise use normal access control for collection data
+      return isAdminOrHasSiteAccess({ req })
+    },
     create: canCreateForSites,
     update: canUpdateSiteContent,
     delete: canDeleteSiteContent,
