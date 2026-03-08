@@ -84,11 +84,6 @@ export const SiteSettings: CollectionConfig = {
                   'Small icon displayed in browser tabs (16x16 or 32x32 pixels, filtered by site)',
               },
             },
-          ],
-        },
-        {
-          label: 'Contact Information',
-          fields: [
             {
               name: 'email',
               type: 'email',
@@ -104,42 +99,81 @@ export const SiteSettings: CollectionConfig = {
           label: 'Social Media',
           fields: [
             {
-              name: 'facebook',
-              type: 'text',
-              label: 'Facebook URL',
-              validate: validateURL,
+              name: 'socials',
+              type: 'group',
+              label: 'Social Media Links',
               admin: {
-                description: 'Full URL to Facebook page (e.g., https://facebook.com/yourpage)',
+                description: 'Social media profile URLs for the site',
               },
-            },
-            {
-              name: 'twitter',
-              type: 'text',
-              label: 'Twitter URL',
-              validate: validateURL,
-              admin: {
-                description: 'Full URL to Twitter/X profile (e.g., https://twitter.com/yourhandle)',
-              },
-            },
-            {
-              name: 'instagram',
-              type: 'text',
-              label: 'Instagram URL',
-              validate: validateURL,
-              admin: {
-                description:
-                  'Full URL to Instagram profile (e.g., https://instagram.com/yourhandle)',
-              },
-            },
-            {
-              name: 'linkedin',
-              type: 'text',
-              label: 'LinkedIn URL',
-              validate: validateURL,
-              admin: {
-                description:
-                  'Full URL to LinkedIn company page (e.g., https://linkedin.com/company/yourcompany)',
-              },
+              fields: [
+                {
+                  name: 'facebook',
+                  type: 'text',
+                  label: 'Facebook URL',
+                  validate: validateURL,
+                  admin: {
+                    description: 'Full URL to Facebook page (e.g., https://facebook.com/yourpage)',
+                  },
+                },
+                {
+                  name: 'twitter',
+                  type: 'text',
+                  label: 'Twitter URL',
+                  validate: validateURL,
+                  admin: {
+                    description: 'Full URL to Twitter/X profile (e.g., https://twitter.com/yourhandle)',
+                  },
+                },
+                {
+                  name: 'instagram',
+                  type: 'text',
+                  label: 'Instagram URL',
+                  validate: validateURL,
+                  admin: {
+                    description:
+                      'Full URL to Instagram profile (e.g., https://instagram.com/yourhandle)',
+                  },
+                },
+                {
+                  name: 'linkedin',
+                  type: 'text',
+                  label: 'LinkedIn URL',
+                  validate: validateURL,
+                  admin: {
+                    description:
+                      'Full URL to LinkedIn company page (e.g., https://linkedin.com/company/yourcompany)',
+                  },
+                },
+                {
+                  name: 'youtube',
+                  type: 'text',
+                  label: 'YouTube URL',
+                  validate: validateURL,
+                  admin: {
+                    description:
+                      'Full URL to YouTube channel (e.g., https://youtube.com/@yourchannel)',
+                  },
+                },
+                {
+                  name: 'google',
+                  type: 'text',
+                  label: 'Google Business Profile URL',
+                  validate: validateURL,
+                  admin: {
+                    description:
+                      'Full URL to Google Business Profile (e.g., https://g.page/yourbusiness)',
+                  },
+                },
+                {
+                  name: 'yelp',
+                  type: 'text',
+                  label: 'Yelp URL',
+                  validate: validateURL,
+                  admin: {
+                    description: 'Full URL to Yelp business page (e.g., https://yelp.com/biz/yourbusiness)',
+                  },
+                },
+              ],
             },
           ],
         },
@@ -301,6 +335,20 @@ export const SiteSettings: CollectionConfig = {
               type: 'group',
               fields: [
                 {
+                  name: 'primaryAction',
+                  type: 'radio',
+                  label: 'Primary Action',
+                  options: [
+                    { label: 'Shop for Tires', value: 'shopTires' },
+                    { label: 'Schedule Service', value: 'scheduleService' },
+                    { label: 'Get a Quote', value: 'getQuote' },
+                  ],
+                  defaultValue: 'shopTires',
+                  admin: {
+                    description: 'Select which action is the primary call-to-action for the site',
+                  },
+                },
+                {
                   name: 'shopTires',
                   label: 'Shop Tires',
                   type: 'group',
@@ -327,6 +375,22 @@ export const SiteSettings: CollectionConfig = {
                         description:
                           'Select which widget provider to use for the Shop Tires action',
                         condition: (data) => data?.actions?.shopTires?.enabled === true,
+                      },
+                    },
+                    {
+                      name: 'renderType',
+                      type: 'radio',
+                      label: 'Render Type',
+                      options: [
+                        { label: 'Popup', value: 'popup' },
+                        { label: 'Redirect to Page', value: 'redirect' },
+                      ],
+                      defaultValue: 'popup',
+                      admin: {
+                        description: 'Choose how to display the shop tires action',
+                        condition: (data) =>
+                          data?.actions?.shopTires?.enabled === true &&
+                          data?.actions?.shopTires?.provider === 'tireTutor',
                       },
                     },
                   ],
@@ -361,6 +425,22 @@ export const SiteSettings: CollectionConfig = {
                         condition: (data) => data?.actions?.scheduleService?.enabled === true,
                       },
                     },
+                    {
+                      name: 'renderType',
+                      type: 'radio',
+                      label: 'Render Type',
+                      options: [
+                        { label: 'Popup', value: 'popup' },
+                        { label: 'Redirect to Page', value: 'redirect' },
+                      ],
+                      defaultValue: 'popup',
+                      admin: {
+                        description: 'Choose how to display the schedule service action',
+                        condition: (data) =>
+                          data?.actions?.scheduleService?.enabled === true &&
+                          data?.actions?.scheduleService?.provider === 'tireTutor',
+                      },
+                    },
                   ],
                 },
                 {
@@ -389,6 +469,69 @@ export const SiteSettings: CollectionConfig = {
                       admin: {
                         description: 'Select which widget provider to use for the Get Quote action',
                         condition: (data) => data?.actions?.getQuote?.enabled === true,
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Forms',
+          fields: [
+            {
+              name: 'forms',
+              type: 'group',
+              label: 'Form Configuration',
+              admin: {
+                description: 'Configure Tally forms and email recipients',
+              },
+              fields: [
+                {
+                  name: 'contactForm',
+                  type: 'group',
+                  label: 'Contact Form',
+                  fields: [
+                    {
+                      name: 'formId',
+                      type: 'text',
+                      label: 'Tally Form ID',
+                      admin: {
+                        description: 'Tally form ID for contact form submissions',
+                      },
+                    },
+                    {
+                      name: 'email',
+                      type: 'email',
+                      label: 'Submission Email',
+                      validate: validateEmail,
+                      admin: {
+                        description: 'Email address to receive contact form submissions',
+                      },
+                    },
+                  ],
+                },
+                {
+                  name: 'careerForm',
+                  type: 'group',
+                  label: 'Career Form',
+                  fields: [
+                    {
+                      name: 'formId',
+                      type: 'text',
+                      label: 'Tally Form ID',
+                      admin: {
+                        description: 'Tally form ID for career form submissions',
+                      },
+                    },
+                    {
+                      name: 'email',
+                      type: 'email',
+                      label: 'Submission Email',
+                      validate: validateEmail,
+                      admin: {
+                        description: 'Email address to receive career form submissions',
                       },
                     },
                   ],
