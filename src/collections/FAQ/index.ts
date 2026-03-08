@@ -11,7 +11,7 @@ export const FAQ: CollectionConfig = {
   slug: 'faq',
   admin: {
     useAsTitle: 'question',
-    defaultColumns: ['question', 'site', 'orderNo', 'isFeatured', 'updatedAt'],
+    defaultColumns: ['question', 'site', 'order', 'isFeatured', 'updatedAt'],
     description: 'Manage frequently asked questions for each site',
   },
   access: {
@@ -52,7 +52,7 @@ export const FAQ: CollectionConfig = {
       },
     },
     {
-      name: 'orderNo',
+      name: 'order',
       type: 'number',
       required: true,
       defaultValue: 1,

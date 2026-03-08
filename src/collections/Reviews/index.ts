@@ -11,7 +11,7 @@ export const Reviews: CollectionConfig = {
   slug: 'reviews',
   admin: {
     useAsTitle: 'author',
-    defaultColumns: ['author', 'rating', 'site', 'orderNo', 'isFeatured', 'updatedAt'],
+    defaultColumns: ['author', 'rating', 'site', 'order', 'isFeatured', 'updatedAt'],
     description: 'Manage customer reviews from Google for each site',
   },
   access: {
@@ -79,7 +79,7 @@ export const Reviews: CollectionConfig = {
       },
     },
     {
-      name: 'orderNo',
+      name: 'order',
       type: 'number',
       required: true,
       defaultValue: 1,

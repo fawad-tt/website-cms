@@ -51,7 +51,7 @@ export const Blogs: CollectionConfig = {
             },
             slugField({ fieldToUse: 'title' }),
             {
-              name: 'orderNo',
+              name: 'order',
               type: 'number',
               required: true,
               defaultValue: 1,
@@ -71,7 +71,7 @@ export const Blogs: CollectionConfig = {
               },
             },
             {
-              name: 'featuredImage',
+              name: 'image',
               type: 'upload',
               relationTo: 'media',
               label: 'Featured Image',

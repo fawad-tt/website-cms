@@ -12,7 +12,7 @@ export const TireBrands: CollectionConfig = {
   slug: 'tire-brands',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'site', 'displayOrder', 'isFeatured', 'updatedAt'],
+    defaultColumns: ['name', 'site', 'order', 'isFeatured', 'updatedAt'],
     description: 'Manage tire brands for each site',
   },
   access: {
@@ -51,7 +51,7 @@ export const TireBrands: CollectionConfig = {
             },
             slugField({ fieldToUse: 'name' }),
             {
-              name: 'displayOrder',
+              name: 'order',
               type: 'number',
               required: true,
               defaultValue: 1,

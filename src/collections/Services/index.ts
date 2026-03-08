@@ -12,7 +12,7 @@ export const Services: CollectionConfig = {
   slug: 'services',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'site', 'orderNo', 'isFeatured', 'updatedAt'],
+    defaultColumns: ['name', 'site', 'order', 'isFeatured', 'updatedAt'],
     description: 'Manage services offered for each site',
   },
   access: {
@@ -51,7 +51,7 @@ export const Services: CollectionConfig = {
             },
             slugField({ fieldToUse: 'name' }),
             {
-              name: 'orderNo',
+              name: 'order',
               type: 'number',
               required: true,
               defaultValue: 1,

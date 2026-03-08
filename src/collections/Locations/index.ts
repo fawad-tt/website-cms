@@ -7,6 +7,7 @@ import {
 } from '../../access'
 import {
   userSitesFilter,
+  selectedSiteFilter,
   validateURL,
   validateEmail,
   validateLatitude,
@@ -18,7 +19,7 @@ export const Locations: CollectionConfig = {
   slug: 'locations',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'site', 'orderNo', 'updatedAt'],
+    defaultColumns: ['name', 'site', 'order', 'updatedAt'],
     description: 'Manage store locations for each site',
   },
   access: {
@@ -56,12 +57,12 @@ export const Locations: CollectionConfig = {
               },
             },
             {
-              name: 'orderNo',
+              name: 'order',
               type: 'number',
               required: true,
               defaultValue: 1,
               min: 0,
-              label: 'Display Order',
+              label: 'Order',
               admin: {
                 description: 'Display order for sorting locations (lower numbers appear first)',
               },
@@ -93,67 +94,99 @@ export const Locations: CollectionConfig = {
                 description: 'Contact email address for this location',
               },
             },
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Location Image',
+              filterOptions: selectedSiteFilter,
+              admin: {
+                description: 'Image for this location',
+              },
+            },
           ],
         },
         {
           label: 'Social Media',
           fields: [
             {
-              name: 'facebook',
-              type: 'text',
-              label: 'Facebook URL',
-              validate: validateURL,
+              name: 'socials',
+              type: 'group',
+              label: 'Social Media Links',
               admin: {
-                description: 'Full URL to Facebook page (e.g., https://facebook.com/yourpage)',
+                description: 'Social media profile URLs for this location',
               },
-            },
-            {
-              name: 'twitter',
-              type: 'text',
-              label: 'Twitter URL',
-              validate: validateURL,
-              admin: {
-                description: 'Full URL to Twitter/X profile (e.g., https://twitter.com/yourhandle)',
-              },
-            },
-            {
-              name: 'yelp',
-              type: 'text',
-              label: 'Yelp URL',
-              validate: validateURL,
-              admin: {
-                description:
-                  'Full URL to Yelp business page (e.g., https://yelp.com/biz/your-business)',
-              },
-            },
-            {
-              name: 'google',
-              type: 'text',
-              label: 'Google Business URL',
-              validate: validateURL,
-              admin: {
-                description:
-                  'Full URL to Google Business profile (e.g., https://g.page/your-business)',
-              },
-            },
-            {
-              name: 'instagram',
-              type: 'text',
-              label: 'Instagram URL',
-              validate: validateURL,
-              admin: {
-                description:
-                  'Full URL to Instagram profile (e.g., https://instagram.com/yourhandle)',
-              },
-            },
-            {
-              name: 'youtube',
-              type: 'text',
-              label: 'YouTube URL',
-              validate: validateURL,
-              admin: {
-                description: 'Full URL to YouTube channel (e.g., https://youtube.com/@yourchannel)',
-              },
+              fields: [
+                {
+                  name: 'facebook',
+                  type: 'text',
+                  label: 'Facebook URL',
+                  validate: validateURL,
+                  admin: {
+                    description: 'Full URL to Facebook page (e.g., https://facebook.com/yourpage)',
+                  },
+                },
+                {
+                  name: 'twitter',
+                  type: 'text',
+                  label: 'Twitter URL',
+                  validate: validateURL,
+                  admin: {
+                    description:
+                      'Full URL to Twitter/X profile (e.g., https://twitter.com/yourhandle)',
+                  },
+                },
+                {
+                  name: 'instagram',
+                  type: 'text',
+                  label: 'Instagram URL',
+                  validate: validateURL,
+                  admin: {
+                    description:
+                      'Full URL to Instagram profile (e.g., https://instagram.com/yourhandle)',
+                  },
+                },
+                {
+                  name: 'linkedin',
+                  type: 'text',
+                  label: 'LinkedIn URL',
+                  validate: validateURL,
+                  admin: {
+                    description:
+                      'Full URL to LinkedIn company page (e.g., https://linkedin.com/company/yourcompany)',
+                  },
+                },
+                {
+                  name: 'youtube',
+                  type: 'text',
+                  label: 'YouTube URL',
+                  validate: validateURL,
+                  admin: {
+                    description:
+                      'Full URL to YouTube channel (e.g., https://youtube.com/@yourchannel)',
+                  },
+                },
+                {
+                  name: 'google',
+                  type: 'text',
+                  label: 'Google Business Profile URL',
+                  validate: validateURL,
+                  admin: {
+                    description:
+                      'Full URL to Google Business Profile (e.g., https://g.page/yourbusiness)',
+                  },
+                },
+                {
+                  name: 'yelp',
+                  type: 'text',
+                  label: 'Yelp URL',
+                  validate: validateURL,
+                  admin: {
+                    description:
+                      'Full URL to Yelp business page (e.g., https://yelp.com/biz/yourbusiness)',
+                  },
+                },
+              ],
             },
           ],
         },
@@ -205,74 +238,84 @@ export const Locations: CollectionConfig = {
           fields: [
             {
               name: 'address',
-              type: 'text',
-              required: true,
-              label: 'Full Address',
+              type: 'group',
+              label: 'Address Information',
               admin: {
-                description: 'Complete address as a single line',
+                description: 'Complete address details for this location',
               },
-            },
-            {
-              name: 'streetAddress',
-              type: 'text',
-              required: true,
-              label: 'Street Address',
-              admin: {
-                description: 'Street number and name (e.g., "123 Main St")',
-              },
-            },
-            {
-              name: 'locality',
-              type: 'text',
-              required: true,
-              label: 'City/Locality',
-              admin: {
-                description: 'City or locality name',
-              },
-            },
-            {
-              name: 'region',
-              type: 'text',
-              required: true,
-              label: 'State/Region',
-              admin: {
-                description: 'State, province, or region (e.g., "CA" or "California")',
-              },
-            },
-            {
-              name: 'postalCode',
-              type: 'text',
-              required: true,
-              label: 'Postal Code',
-              admin: {
-                description: 'ZIP code or postal code',
-              },
-            },
-            {
-              name: 'latitude',
-              type: 'number',
-              label: 'Latitude',
-              validate: validateLatitude,
-              admin: {
-                description: 'Latitude coordinate (-90 to 90)',
-              },
-            },
-            {
-              name: 'longitude',
-              type: 'number',
-              label: 'Longitude',
-              validate: validateLongitude,
-              admin: {
-                description: 'Longitude coordinate (-180 to 180)',
-              },
-            },
-            {
-              name: 'googlePlaceId',
-              type: 'text',
-              label: 'Google Place ID',
-              admin: {
-                description: 'Google Place ID for the location',
-              },
+              fields: [
+                {
+                  name: 'full',
+                  type: 'text',
+                  required: true,
+                  label: 'Full Address',
+                  admin: {
+                    description: 'Complete address as a single line',
+                  },
+                },
+                {
+                  name: 'streetAddress',
+                  type: 'text',
+                  required: true,
+                  label: 'Street Address',
+                  admin: {
+                    description: 'Street number and name (e.g., "123 Main St")',
+                  },
+                },
+                {
+                  name: 'locality',
+                  type: 'text',
+                  required: true,
+                  label: 'City/Locality',
+                  admin: {
+                    description: 'City or locality name',
+                  },
+                },
+                {
+                  name: 'region',
+                  type: 'text',
+                  required: true,
+                  label: 'State/Region',
+                  admin: {
+                    description: 'State, province, or region (e.g., "CA" or "California")',
+                  },
+                },
+                {
+                  name: 'postalCode',
+                  type: 'text',
+                  required: true,
+                  label: 'Postal Code',
+                  admin: {
+                    description: 'ZIP code or postal code',
+                  },
+                },
+                {
+                  name: 'latitude',
+                  type: 'number',
+                  label: 'Latitude',
+                  validate: validateLatitude,
+                  admin: {
+                    description: 'Latitude coordinate (-90 to 90)',
+                  },
+                },
+                {
+                  name: 'longitude',
+                  type: 'number',
+                  label: 'Longitude',
+                  validate: validateLongitude,
+                  admin: {
+                    description: 'Longitude coordinate (-180 to 180)',
+                  },
+                },
+                {
+                  name: 'googlePlaceId',
+                  type: 'text',
+                  label: 'Google Place ID',
+                  admin: {
+                    description: 'Google Place ID for the location',
+                  },
+                },
+              ],
             },
           ],
         },
@@ -280,60 +323,70 @@ export const Locations: CollectionConfig = {
           label: 'Working Hours',
           fields: [
             {
-              name: 'mondayHours',
-              type: 'text',
-              label: 'Monday Hours',
+              name: 'hours',
+              type: 'group',
+              label: 'Business Hours',
               admin: {
-                description: 'e.g., "9:00 AM - 5:00 PM" or "Closed"',
+                description: 'Operating hours for each day of the week',
               },
-            },
-            {
-              name: 'tuesdayHours',
-              type: 'text',
-              label: 'Tuesday Hours',
-              admin: {
-                description: 'e.g., "9:00 AM - 5:00 PM" or "Closed"',
-              },
-            },
-            {
-              name: 'wednesdayHours',
-              type: 'text',
-              label: 'Wednesday Hours',
-              admin: {
-                description: 'e.g., "9:00 AM - 5:00 PM" or "Closed"',
-              },
-            },
-            {
-              name: 'thursdayHours',
-              type: 'text',
-              label: 'Thursday Hours',
-              admin: {
-                description: 'e.g., "9:00 AM - 5:00 PM" or "Closed"',
-              },
-            },
-            {
-              name: 'fridayHours',
-              type: 'text',
-              label: 'Friday Hours',
-              admin: {
-                description: 'e.g., "9:00 AM - 5:00 PM" or "Closed"',
-              },
-            },
-            {
-              name: 'saturdayHours',
-              type: 'text',
-              label: 'Saturday Hours',
-              admin: {
-                description: 'e.g., "9:00 AM - 5:00 PM" or "Closed"',
-              },
-            },
-            {
-              name: 'sundayHours',
-              type: 'text',
-              label: 'Sunday Hours',
-              admin: {
-                description: 'e.g., "9:00 AM - 5:00 PM" or "Closed"',
-              },
+              fields: [
+                {
+                  name: 'monday',
+                  type: 'text',
+                  label: 'Monday Hours',
+                  admin: {
+                    description: 'e.g., "9:00 AM - 5:00 PM" or "Closed"',
+                  },
+                },
+                {
+                  name: 'tuesday',
+                  type: 'text',
+                  label: 'Tuesday Hours',
+                  admin: {
+                    description: 'e.g., "9:00 AM - 5:00 PM" or "Closed"',
+                  },
+                },
+                {
+                  name: 'wednesday',
+                  type: 'text',
+                  label: 'Wednesday Hours',
+                  admin: {
+                    description: 'e.g., "9:00 AM - 5:00 PM" or "Closed"',
+                  },
+                },
+                {
+                  name: 'thursday',
+                  type: 'text',
+                  label: 'Thursday Hours',
+                  admin: {
+                    description: 'e.g., "9:00 AM - 5:00 PM" or "Closed"',
+                  },
+                },
+                {
+                  name: 'friday',
+                  type: 'text',
+                  label: 'Friday Hours',
+                  admin: {
+                    description: 'e.g., "9:00 AM - 5:00 PM" or "Closed"',
+                  },
+                },
+                {
+                  name: 'saturday',
+                  type: 'text',
+                  label: 'Saturday Hours',
+                  admin: {
+                    description: 'e.g., "9:00 AM - 5:00 PM" or "Closed"',
+                  },
+                },
+                {
+                  name: 'sunday',
+                  type: 'text',
+                  label: 'Sunday Hours',
+                  admin: {
+                    description: 'e.g., "9:00 AM - 5:00 PM" or "Closed"',
+                  },
+                },
+              ],
             },
           ],
         },
