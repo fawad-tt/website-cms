@@ -96,18 +96,9 @@ export const canUpdateSiteContent: Access = ({ req: { user } }) => {
     })
 
     return {
-      or: [
-        {
-          site: {
-            in: siteIds,
-          },
-        },
-        {
-          site: {
-            exists: false,
-          },
-        },
-      ],
+      site: {
+        in: siteIds,
+      },
     }
   }
 
@@ -126,18 +117,9 @@ export const canDeleteSiteContent: Access = ({ req: { user } }) => {
     })
 
     return {
-      or: [
-        {
-          site: {
-            in: siteIds,
-          },
-        },
-        {
-          site: {
-            exists: false,
-          },
-        },
-      ],
+      site: {
+        in: siteIds,
+      },
     }
   }
 

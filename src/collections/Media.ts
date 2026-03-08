@@ -1,9 +1,11 @@
 import type { CollectionConfig } from 'payload'
+import { ValidationError } from 'payload'
 import {
   isAdminOrHasSiteAccess,
   canCreateForSites,
   canUpdateSiteContent,
   canDeleteSiteContent,
+  isAdmin,
 } from '../access'
 import { userSitesFilter } from '../utils/filters'
 
@@ -27,17 +29,38 @@ export const Media: CollectionConfig = {
     update: canUpdateSiteContent,
     delete: canDeleteSiteContent,
   },
+  hooks: {
+    beforeChange: [
+      ({ req, operation, data }) => {
+        if (operation === 'create') {
+          if (!isAdmin({ req }) && !data.site) {
+            throw new ValidationError({
+              errors: [
+                {
+                  path: 'site',
+                  message:
+                    'Please select a site. You are not allowed to create media without a site.',
+                },
+              ],
+            })
+          }
+        }
+        return data
+      },
+    ],
+  },
   fields: [
     {
       name: 'site',
       type: 'relationship',
       relationTo: 'sites',
-      required: true,
+      required: false,
       index: true,
       label: 'Site',
       filterOptions: userSitesFilter,
       admin: {
-        description: 'Select the site this media belongs to',
+        description:
+          'Select the site this media belongs to. Leave empty for global media (admin only).',
       },
     },
     {
