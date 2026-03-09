@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { canReadSites, isAdmin, canUpdateSites, isAdminFieldLevel } from '../../access'
+import { REBATE_TAG_OPTIONS } from '../Rebates/constants'
 
 export const Site: CollectionConfig = {
   slug: 'sites',
@@ -27,7 +28,7 @@ export const Site: CollectionConfig = {
       unique: true,
       index: true,
       label: 'Slug',
-      access:{
+      access: {
         update: isAdminFieldLevel,
       },
       maxLength: 40,
@@ -50,7 +51,18 @@ export const Site: CollectionConfig = {
         return true
       },
       admin: {
-        description: 'URL-friendly identifier (lowercase, numbers, hyphens only, max 40 characters)',
+        description:
+          'URL-friendly identifier (lowercase, numbers, hyphens only, max 40 characters)',
+      },
+    },
+    {
+      name: 'rebateTags',
+      type: 'select',
+      hasMany: true,
+      label: 'Rebate Tags',
+      options: REBATE_TAG_OPTIONS,
+      admin: {
+        description: 'Select which rebates should be shown in this site',
       },
     },
   ],

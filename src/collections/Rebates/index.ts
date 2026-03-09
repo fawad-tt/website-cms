@@ -1,6 +1,7 @@
 import type { CollectionConfig, Validate } from 'payload'
 import { isAdmin, isAdminOrAPIUser } from '../../access'
 import { validateURL } from '@/utils/validators'
+import { REBATE_TAG_OPTIONS } from './constants'
 
 const BRAND_OPTIONS = [
   { label: 'BFGoodrich', value: 'bfgoodrich' },
@@ -19,13 +20,6 @@ const BRAND_OPTIONS = [
   { label: 'Milestar', value: 'milestar' },
   { label: 'Toyo', value: 'toyo' },
   { label: 'Uniroyal', value: 'uniroyal' },
-]
-
-const TAG_OPTIONS = [
-  { label: 'Manufacturer Rebates', value: 'manufacturer-rebates' },
-  { label: 'Tire Pros', value: 'tire-pros' },
-  { label: 'USAF Tire One', value: 'usaf-tire-one' },
-  { label: 'USAF Tire One (Exclusive)', value: 'usaf-tire-one-exclusive' },
 ]
 
 const validateOfferStart: Validate = (value, { data }) => {
@@ -142,7 +136,7 @@ export const Rebates: CollectionConfig = {
       hasMany: true,
       required: true,
       label: 'Tags',
-      options: TAG_OPTIONS,
+      options: REBATE_TAG_OPTIONS,
       admin: {
         description: 'Select one or more tags to classify the rebate.',
       },
