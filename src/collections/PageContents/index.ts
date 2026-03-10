@@ -891,6 +891,32 @@ export const PageContents: CollectionConfig = {
         },
       ],
     },
+    {
+      name: 'serviceArea',
+      type: 'group',
+      label: 'Service Area',
+      fields: [
+        {
+          name: 'tagline',
+          type: 'text',
+          label: 'Tagline',
+          defaultValue: 'Service Coverage',
+          admin: {
+            description: 'Tagline for the service area section',
+          },
+        },
+        {
+          name: 'heading',
+          type: 'text',
+          required: true,
+          label: 'Heading',
+          defaultValue: 'Areas We Serve',
+          admin: {
+            description: 'Main heading for the service area section',
+          },
+        },
+      ],
+    },
   ],
   timestamps: true,
 }
