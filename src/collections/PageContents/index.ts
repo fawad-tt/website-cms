@@ -436,6 +436,16 @@ export const PageContents: CollectionConfig = {
                 description: 'Paragraph text for the services page hero section',
               },
             },
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Hero Image',
+              filterOptions: selectedSiteOrGlobalFilter,
+              admin: {
+                description: 'Image for the services page hero section',
+              },
+            },
           ],
         },
         {
@@ -913,6 +923,16 @@ export const PageContents: CollectionConfig = {
           defaultValue: 'Areas We Serve',
           admin: {
             description: 'Main heading for the service area section',
+          },
+        },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Image',
+          filterOptions: selectedSiteOrGlobalFilter,
+          admin: {
+            description: 'Image for the service area section',
           },
         },
       ],
