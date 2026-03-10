@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { isAdmin, canUpdateSiteContent, isAdminOrHasSiteAccess } from '../../access'
 import { validateUniquePageContents } from './hooks/validateUniquePageContents'
-import { selectedSiteFilter } from '../../utils/filters'
+import { selectedSiteOrGlobalFilter } from '../../utils/filters'
 
 export const PageContents: CollectionConfig = {
   slug: 'page-contents',
@@ -64,7 +64,7 @@ export const PageContents: CollectionConfig = {
           type: 'upload',
           relationTo: 'media',
           label: 'Background Image',
-          filterOptions: selectedSiteFilter,
+          filterOptions: selectedSiteOrGlobalFilter,
           admin: {
             description: 'Background image for the home page hero section (filtered by site)',
           },
@@ -147,7 +147,7 @@ export const PageContents: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               label: 'Image',
-              filterOptions: selectedSiteFilter,
+              filterOptions: selectedSiteOrGlobalFilter,
               admin: {
                 description: 'Image for the about us section',
               },
@@ -197,7 +197,7 @@ export const PageContents: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               label: 'Hero Image',
-              filterOptions: selectedSiteFilter,
+              filterOptions: selectedSiteOrGlobalFilter,
               admin: {
                 description: 'Image for the about us page hero section',
               },
@@ -244,7 +244,7 @@ export const PageContents: CollectionConfig = {
           type: 'upload',
           relationTo: 'media',
           label: 'Image',
-          filterOptions: selectedSiteFilter,
+          filterOptions: selectedSiteOrGlobalFilter,
           admin: {
             description: 'Image used for the featured image on the blog page',
           },
@@ -313,7 +313,7 @@ export const PageContents: CollectionConfig = {
           type: 'upload',
           relationTo: 'media',
           label: 'Image',
-          filterOptions: selectedSiteFilter,
+          filterOptions: selectedSiteOrGlobalFilter,
           admin: {
             description: 'Image used for both the contact page and contact section on homepage',
           },
@@ -341,7 +341,7 @@ export const PageContents: CollectionConfig = {
           required: true,
           label: 'Paragraph',
           defaultValue:
-            'Find answers to common questions about our tire services, pricing, warranties, and more. We\'re here to make your experience as smooth as possible.',
+            "Find answers to common questions about our tire services, pricing, warranties, and more. We're here to make your experience as smooth as possible.",
           admin: {
             description: 'Paragraph text used for both the FAQ page and FAQ section on homepage',
           },
@@ -582,11 +582,13 @@ export const PageContents: CollectionConfig = {
           defaultValue: [
             {
               heading: 'Enter Vehicle Details',
-              paragraph: 'Enter your vehicle information or tire size to find the perfect tires for your needs.',
+              paragraph:
+                'Enter your vehicle information or tire size to find the perfect tires for your needs.',
             },
             {
               heading: 'Browse Tire Options',
-              paragraph: 'Browse our wide selection of premium tire brands and compare prices, ratings, and features.',
+              paragraph:
+                'Browse our wide selection of premium tire brands and compare prices, ratings, and features.',
             },
             {
               heading: 'Choose Your Tires',
@@ -594,7 +596,8 @@ export const PageContents: CollectionConfig = {
             },
             {
               heading: 'Book an Appointment',
-              paragraph: 'Choose a convenient time and location for professional tire installation at your nearest shop.',
+              paragraph:
+                'Choose a convenient time and location for professional tire installation at your nearest shop.',
             },
           ],
           fields: [
@@ -621,7 +624,7 @@ export const PageContents: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               label: 'Step Image',
-              filterOptions: selectedSiteFilter,
+              filterOptions: selectedSiteOrGlobalFilter,
               admin: {
                 description: 'Image/icon for this step',
               },
@@ -670,10 +673,123 @@ export const PageContents: CollectionConfig = {
           type: 'upload',
           relationTo: 'media',
           label: 'Certificate Image',
-          filterOptions: selectedSiteFilter,
+          filterOptions: selectedSiteOrGlobalFilter,
           admin: {
             description: 'Certification badge or logo image (e.g., ASE certification badge)',
           },
+        },
+      ],
+    },
+    {
+      name: 'rebates',
+      type: 'group',
+      label: 'Rebates',
+      fields: [
+        {
+          name: 'heading',
+          type: 'text',
+          required: true,
+          label: 'Heading',
+          defaultValue: 'Current Tire Rebates & Special Offers',
+          admin: {
+            description: 'Main heading for the rebates section',
+          },
+        },
+        {
+          name: 'paragraph',
+          type: 'text',
+          required: true,
+          label: 'Paragraph',
+          defaultValue:
+            'Save money on quality tires with our latest manufacturer rebates and special promotions. Check back regularly for new offers from top tire brands.',
+          admin: {
+            description: 'Paragraph text for the rebates section',
+          },
+        },
+        {
+          name: 'tagline',
+          type: 'text',
+          required: true,
+          label: 'Tag Line',
+          defaultValue: 'Limited Time Offers',
+          admin: {
+            description: 'Tag line for the rebates section',
+          },
+        },
+      ],
+    },
+    {
+      name: 'whyChooseUs',
+      type: 'group',
+      label: 'Why Choose Us',
+      fields: [
+        {
+          name: 'heading',
+          type: 'text',
+          required: true,
+          label: 'Heading',
+          defaultValue: 'Why Choose Our Auto Shop',
+          admin: {
+            description: 'Main heading for the why choose us section',
+          },
+        },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Image',
+          filterOptions: selectedSiteOrGlobalFilter,
+          admin: {
+            description: 'Image for the why choose us section',
+          },
+        },
+        {
+          name: 'items',
+          type: 'array',
+          label: 'Items',
+          minRows: 3,
+          maxRows: 3,
+          required: true,
+          admin: {
+            description: 'Three items explaining why customers should choose your auto shop',
+          },
+          defaultValue: [
+            {
+              heading: 'Expert Guidance',
+              paragraph:
+                'Our knowledgeable staff provides personalized recommendations to help you find the perfect tires and services for your vehicle and driving needs.',
+            },
+            {
+              heading: 'ASE Certified Technicians',
+              paragraph:
+                'Trust your vehicle to certified professionals who undergo rigorous training and maintain the highest standards of automotive service excellence.',
+            },
+            {
+              heading: 'Wide Tire Selection',
+              paragraph:
+                'Choose from an extensive inventory of premium tire brands and models, ensuring you get the right fit, performance, and value for your vehicle.',
+            },
+          ],
+          fields: [
+            {
+              name: 'heading',
+              type: 'text',
+              required: true,
+              label: 'Item Heading',
+              admin: {
+                description: 'Heading for this item',
+              },
+            },
+            {
+              name: 'paragraph',
+              type: 'textarea',
+              required: true,
+              label: 'Item Description',
+              admin: {
+                description: 'Description text for this item',
+              },
+            },
+          ],
         },
       ],
     },
@@ -716,7 +832,7 @@ export const PageContents: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               label: 'Hero Image',
-              filterOptions: selectedSiteFilter,
+              filterOptions: selectedSiteOrGlobalFilter,
               admin: {
                 description: 'Image for the shop for tires page hero section',
               },
@@ -766,7 +882,7 @@ export const PageContents: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               label: 'Image',
-              filterOptions: selectedSiteFilter,
+              filterOptions: selectedSiteOrGlobalFilter,
               admin: {
                 description: 'Image for the shop for tires CTA section',
               },
