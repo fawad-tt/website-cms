@@ -7,7 +7,7 @@ import {
 } from '../../access'
 import {
   userSitesFilter,
-  selectedSiteFilter,
+  selectedSiteOrGlobalFilter,
   validateURL,
   validateEmail,
   validateLatitude,
@@ -99,7 +99,7 @@ export const Locations: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               label: 'Location Image',
-              filterOptions: selectedSiteFilter,
+              filterOptions: selectedSiteOrGlobalFilter,
               admin: {
                 description: 'Image for this location',
               },

@@ -1,4 +1,4 @@
-export { userSitesFilter, selectedSiteFilter } from './filters'
+export { userSitesFilter, selectedSiteFilter, selectedSiteOrGlobalFilter } from './filters'
 export {
   validateURL,
   validateEmail,

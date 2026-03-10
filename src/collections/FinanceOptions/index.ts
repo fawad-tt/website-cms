@@ -5,7 +5,7 @@ import {
   canDeleteSiteContent,
   isAdminOrHasSiteAccess,
 } from '../../access'
-import { userSitesFilter, selectedSiteFilter, validateURL } from '../../utils'
+import { userSitesFilter, selectedSiteOrGlobalFilter, validateURL } from '../../utils'
 
 export const FinanceOptions: CollectionConfig = {
   slug: 'finance-options',
@@ -58,7 +58,7 @@ export const FinanceOptions: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
       label: 'Logo/Image',
-      filterOptions: selectedSiteFilter,
+      filterOptions: selectedSiteOrGlobalFilter,
       admin: {
         description: 'Logo or image for the finance option (filtered by site)',
       },

@@ -6,7 +6,7 @@ import {
   canDeleteSiteContent,
   isAdminOrHasSiteAccess,
 } from '../../access'
-import { userSitesFilter, selectedSiteFilter } from '../../utils'
+import { userSitesFilter, selectedSiteOrGlobalFilter } from '../../utils'
 
 export const Services: CollectionConfig = {
   slug: 'services',
@@ -75,7 +75,7 @@ export const Services: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               label: 'Service Image',
-              filterOptions: selectedSiteFilter,
+              filterOptions: selectedSiteOrGlobalFilter,
               admin: {
                 description: 'Image for the service',
               },

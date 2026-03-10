@@ -6,7 +6,7 @@ import {
   canDeleteSiteContent,
   isAdminOrHasSiteAccess,
 } from '../../access'
-import { userSitesFilter, selectedSiteFilter } from '../../utils'
+import { userSitesFilter, selectedSiteOrGlobalFilter } from '../../utils'
 
 export const Blogs: CollectionConfig = {
   slug: 'blogs',
@@ -75,7 +75,7 @@ export const Blogs: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               label: 'Featured Image',
-              filterOptions: selectedSiteFilter,
+              filterOptions: selectedSiteOrGlobalFilter,
               admin: {
                 description: 'Featured image for the blog post',
               },

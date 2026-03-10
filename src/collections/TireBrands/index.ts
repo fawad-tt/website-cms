@@ -6,7 +6,7 @@ import {
   canDeleteSiteContent,
   isAdminOrHasSiteAccess,
 } from '../../access'
-import { userSitesFilter, selectedSiteFilter } from '../../utils'
+import { userSitesFilter, selectedSiteOrGlobalFilter } from '../../utils'
 
 export const TireBrands: CollectionConfig = {
   slug: 'tire-brands',
@@ -76,7 +76,7 @@ export const TireBrands: CollectionConfig = {
               relationTo: 'media',
               required: true,
               label: 'Brand Logo/Image',
-              filterOptions: selectedSiteFilter,
+              filterOptions: selectedSiteOrGlobalFilter,
               admin: {
                 description: 'Logo or image for the tire brand',
               },

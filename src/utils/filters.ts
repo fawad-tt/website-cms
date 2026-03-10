@@ -31,7 +31,7 @@ export const userSitesFilter: FilterOptions<any> = ({ user }) => {
 
 /**
  * Filter that shows only items from the same site as the current document
- * Used in relationships to ensure content is site-specific (e.g., media, pages)
+ * Used in relationships for collections where site is required (e.g., pages, blogs)
  *
  * Assumes the related collection has a 'site' field
  */
@@ -44,5 +44,32 @@ export const selectedSiteFilter: FilterOptions<any> = ({ data }) => {
     site: {
       equals: siteId,
     },
+  }
+}
+
+/**
+ * Filter that shows items from the same site as the current document AND global items (where site is null)
+ * Used specifically for media uploads to allow selecting both site-specific and global media
+ *
+ * Assumes the related collection has an optional 'site' field
+ */
+export const selectedSiteOrGlobalFilter: FilterOptions<any> = ({ data }) => {
+  const siteId =
+    typeof data?.site === 'string' || typeof data?.site === 'number' ? data.site : data?.site?.id
+
+  if (!siteId) return false
+  return {
+    or: [
+      {
+        site: {
+          equals: siteId,
+        },
+      },
+      {
+        site: {
+          exists: false,
+        },
+      },
+    ],
   }
 }

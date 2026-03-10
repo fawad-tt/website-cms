@@ -6,7 +6,7 @@ import {
   isAdminOrHasSiteAccess,
 } from '../../access'
 import { validateUniqueSiteSettings } from './hooks/validateUniqueSiteSettings'
-import { userSitesFilter, selectedSiteFilter, validateURL, validateEmail } from '../../utils'
+import { userSitesFilter, selectedSiteOrGlobalFilter, validateURL, validateEmail } from '../../utils'
 
 export const SiteSettings: CollectionConfig = {
   slug: 'site-settings',
@@ -68,7 +68,7 @@ export const SiteSettings: CollectionConfig = {
               relationTo: 'media',
               required: true,
               label: 'Site Logo',
-              filterOptions: selectedSiteFilter,
+              filterOptions: selectedSiteOrGlobalFilter,
               admin: {
                 description: 'Main logo for the site (filtered by site)',
               },
@@ -78,7 +78,7 @@ export const SiteSettings: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               label: 'Favicon',
-              filterOptions: selectedSiteFilter,
+              filterOptions: selectedSiteOrGlobalFilter,
               admin: {
                 description:
                   'Small icon displayed in browser tabs (16x16 or 32x32 pixels, filtered by site)',
