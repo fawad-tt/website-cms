@@ -817,6 +817,20 @@ export const PageContents: CollectionConfig = {
                 description: 'Image for the shop for tires page hero section',
               },
             },
+            {
+              name: 'overlayOpacity',
+              type: 'number',
+              required: true,
+              label: 'Overlay Opacity',
+              min: 0,
+              max: 100,
+              defaultValue: 50,
+              admin: {
+                description:
+                  'Overlay opacity percentage (0-100). Higher values create a darker overlay.',
+                condition: (data, siblingData) => Boolean(siblingData?.image),
+              },
+            },
           ],
         },
         {
