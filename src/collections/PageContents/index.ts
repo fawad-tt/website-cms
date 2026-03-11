@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { isAdmin, canUpdateSiteContent, isAdminOrHasSiteAccess } from '../../access'
 import { validateUniquePageContents } from './hooks/validateUniquePageContents'
+import { populateDefaults } from './hooks/populateDefaults'
 import { selectedSiteOrGlobalFilter } from '../../utils/filters'
 
 export const PageContents: CollectionConfig = {
@@ -17,7 +18,7 @@ export const PageContents: CollectionConfig = {
     delete: isAdmin,
   },
   hooks: {
-    beforeChange: [validateUniquePageContents],
+    beforeChange: [populateDefaults, validateUniquePageContents],
   },
   fields: [
     {
@@ -416,6 +417,15 @@ export const PageContents: CollectionConfig = {
           },
           fields: [
             {
+              name: 'tagline',
+              type: 'text',
+              label: 'Tagline',
+              defaultValue: 'Complete Auto Care',
+              admin: {
+                description: 'Tagline for the services page hero section',
+              },
+            },
+            {
               name: 'heading',
               type: 'text',
               required: true,
@@ -585,31 +595,9 @@ export const PageContents: CollectionConfig = {
           label: 'Steps',
           minRows: 4,
           maxRows: 4,
-          required: true,
           admin: {
             description: 'Four steps explaining how the process works',
           },
-          defaultValue: [
-            {
-              heading: 'Enter Vehicle Details',
-              paragraph:
-                'Enter your vehicle information or tire size to find the perfect tires for your needs.',
-            },
-            {
-              heading: 'Browse Tire Options',
-              paragraph:
-                'Browse our wide selection of premium tire brands and compare prices, ratings, and features.',
-            },
-            {
-              heading: 'Choose Your Tires',
-              paragraph: 'Select the tires that best fit your vehicle, budget, and driving needs.',
-            },
-            {
-              heading: 'Book an Appointment',
-              paragraph:
-                'Choose a convenient time and location for professional tire installation at your nearest shop.',
-            },
-          ],
           fields: [
             {
               name: 'heading',
@@ -759,27 +747,9 @@ export const PageContents: CollectionConfig = {
           label: 'Items',
           minRows: 3,
           maxRows: 3,
-          required: true,
           admin: {
             description: 'Three items explaining why customers should choose your auto shop',
           },
-          defaultValue: [
-            {
-              heading: 'Expert Guidance',
-              paragraph:
-                'Our knowledgeable staff provides personalized recommendations to help you find the perfect tires and services for your vehicle and driving needs.',
-            },
-            {
-              heading: 'ASE Certified Technicians',
-              paragraph:
-                'Trust your vehicle to certified professionals who undergo rigorous training and maintain the highest standards of automotive service excellence.',
-            },
-            {
-              heading: 'Wide Tire Selection',
-              paragraph:
-                'Choose from an extensive inventory of premium tire brands and models, ensuring you get the right fit, performance, and value for your vehicle.',
-            },
-          ],
           fields: [
             {
               name: 'heading',
@@ -934,6 +904,84 @@ export const PageContents: CollectionConfig = {
           admin: {
             description: 'Image for the service area section',
           },
+        },
+      ],
+    },
+    {
+      name: 'trustSection',
+      type: 'group',
+      label: 'Trust Section',
+      fields: [
+        {
+          name: 'tagline',
+          type: 'text',
+          label: 'Tagline',
+          defaultValue: 'Trust & Reliability',
+          admin: {
+            description: 'Tagline for the trust section',
+          },
+        },
+        {
+          name: 'heading',
+          type: 'text',
+          required: true,
+          label: 'Heading',
+          defaultValue: 'Why Customers Trust Us',
+          admin: {
+            description: 'Main heading for the trust section',
+          },
+        },
+        {
+          name: 'paragraph',
+          type: 'textarea',
+          required: true,
+          label: 'Paragraph',
+          defaultValue:
+            "With decades of experience and thousands of satisfied customers, we have built our reputation on quality service, honest pricing, and expert care. Here's what sets us apart.",
+          admin: {
+            description: 'Paragraph text for the trust section',
+          },
+        },
+        {
+          name: 'items',
+          type: 'array',
+          label: 'Trust Items',
+          minRows: 3,
+          maxRows: 3,
+          admin: {
+            description: 'Three trust factors with heading, paragraph, and icon/badge',
+          },
+          fields: [
+            {
+              name: 'heading',
+              type: 'text',
+              required: true,
+              label: 'Item Heading',
+              admin: {
+                description: 'Heading for this trust item',
+              },
+            },
+            {
+              name: 'paragraph',
+              type: 'textarea',
+              required: true,
+              label: 'Item Description',
+              admin: {
+                description: 'Description text for this trust item',
+              },
+            },
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Trust Badge/Icon',
+              filterOptions: selectedSiteOrGlobalFilter,
+              admin: {
+                description:
+                  'Icon or badge image for this trust item (e.g., certification badge, trust icon)',
+              },
+            },
+          ],
         },
       ],
     },
